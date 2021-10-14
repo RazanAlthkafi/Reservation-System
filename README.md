@@ -1,7 +1,7 @@
 # Reservation-System
 
 
-# is System to reserve airline ticket 
+# is System to reservation airline ticket 
 - For each ticket contain:
     -name
     -phone number
