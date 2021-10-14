@@ -14,8 +14,8 @@
     
     # usage
     - create uniqe id for reserve number func ReserveNumber ()-> Int
-    - add new FlightScedule unc AddFlight(addflight: Flight) 
-    - create new reservation func NewAReservation(NewReserve: NewReservation )
+    - add new FlightSchedule unc AddFlight(addflight: Flight) -date/time
+    - create new reservation func NewAReservation(NewReserve: NewReservation ) -name/phonenumber/from/to/date/time/seat/email
     - search about reservation by phone number func   func SearchForReservation(phoneNumber: Int)
     - search for all reservaion on specific date func ShowAllResevationInFlight (date: String)
     - cancel reservation by phone number func Cancel (phonenumber: Int)
