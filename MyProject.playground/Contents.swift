@@ -1,32 +1,36 @@
-import UIKit
-import Darwin
+    import UIKit
 import Foundation
 
+protocol Airline {
+    
+    func GetTicket(pay: Bool , phonenumber: Int)
+}
+struct Flight{
+ 
+    var date: String
+    var time : String
+}
 
-
-
-struct NewReservation  {
-    var flightName: String
+struct NewReservation{
     var From: String
     var To: String
     var Seat: Int
     var Name: String
     var PhoneNumber: Int
     var Email: String
-    
-    
+    var Date: String
+    var Time: String
 }
 
-
-class AirLine {
+class Plane :Airline  {
     
-    var reservation : [NewReservation] = []
+    var FlightScedule: [Flight] = []
+    var Reservation :  [NewReservation] = []
     var UniqueReserveNumber: Int
     
     init (){
         self.UniqueReserveNumber = 0
     }
-    
     
     func ReserveNumber ()-> Int{
         
@@ -34,81 +38,63 @@ class AirLine {
         return (self.UniqueReserveNumber)
     }
     
-    func NewAdd(flightName: String,From: String,To: String,
-                Seat: Int,Name: String,PhoneNumber: Int,Email: String ){
-        let x = NewReservation(flightName: flightName , From: From, To: To, Seat: Seat, Name: Name, PhoneNumber: PhoneNumber, Email: Email)
-        reservation.append(x)
+    
+   func AddFlight(addflight: Flight){
+     FlightScedule.append(addflight)
     }
     
-    func Search(phoneNumber: Int){
+    func NewAReservation(NewReserve: NewReservation ){
+        Reservation.append(NewReserve)
+    }
+    func SearchForReservation(phoneNumber: Int){
         
         var found: Bool = false
         
-        for i in 0..<reservation.count{
+        for i in 0..<Reservation.count{
         
-            if ( reservation[i].PhoneNumber == phoneNumber){
-                print (" NEW RESERVE HERE " , reservation[i])
+            if ( Reservation[i].PhoneNumber == phoneNumber){
+                print ("\n NEW RESERVE HERE :\n " , Reservation[i])
                 found = true
                 break
             }
         }
+        
+    
         if found == false{
-            print("NO RESERVE HERE")
+            print("\n NO RESERVE HERE")
             
         }
         
     }
     
-    
-    func Cancel (phonenumber: Int){
+    func ShowAllResevationInFlight (date: String){
         var found: Bool = false
-        for i in 0..<reservation.count {
-            if( reservation[i].PhoneNumber == phonenumber){
-                found = true
-                reservation.remove(at: i)
-                print("THIS RESERVATION IS CANCEL\n")
-                break
-                
-            }
-            
+        for i in 0..<Reservation.count{
+            for j in 0..<FlightScedule.count{
+                if(Reservation[i].Date == date && FlightScedule[j].date == date){
+                    found = true
+                    print("\n ALL RESRVATION ON THIS DATE")
+                    print("\(Reservation[i].Name) , \(Reservation[i].PhoneNumber), \(Reservation[i].Email)")
+                }
+        }
+        
         }
         if found == false {
-            print("NO RESULT")
+            print("\n NO RESERVATION ON THIS DATE")
         }
     }
-    func Edit (phonenumber: Int, email: String){
-        var found: Bool = false
-        for i in 0..<reservation.count  {
-          if( reservation[i].PhoneNumber == phonenumber){
-                found = true
-              reservation[i].Email = email
-                print("UPDATE SUCCEFULY succesfuly \n: \(reservation[i]) \n")
-                
-            }
-            else if reservation[i].Email == email{
-                found = true
-                reservation[i].PhoneNumber = phonenumber
-                print("UPDATE SUCCEFULY succesfuly \n \(reservation[i]) \n")
-                
-            }
-        }
-      if found == false{
-           print("NO RESULLT")
-        }
-           
-            }
-    
     
     func GetTicket(pay: Bool,phonenumber: Int){
         var found: Bool = false
      
-        for i in 0..<reservation.count where reservation[i].PhoneNumber == phonenumber{
+        for i in 0..<Reservation.count where Reservation[i].PhoneNumber == phonenumber{
             if (pay == true ){
                 found = true
-                print("YOUR RESERVATION IS CONFIRM")
+                print("\nYOUR RESERVATION IS CONFIRM")
                 
                 print("YOUR RESERVATION NUMBER :" , ReserveNumber())
-                print("DETAILS OF YOUR RESERVATION: \n   \(reservation[i]) \n" )
+                print("DETAILS OF YOUR RESERVATION: \n  \(Reservation[i].Name) , \(Reservation[i].From) - \(Reservation[i].To) \n" )
+              
                 break
             }
         }
@@ -116,38 +102,68 @@ class AirLine {
             print("NO RESULT")
         }
     }
+
     
-    func List (){
-        for i in reservation {
-            print(i)
+    func Cancel(phonenumber: Int){
+        var found: Bool = false
+        for i in 0..<Reservation.count {
+            if( Reservation[i].PhoneNumber == phonenumber){
+                found = true
+                Reservation.remove(at: i)
+                print("RESERVATION IS CANCEL SUCCESFULY \n")
+                break
+                
+            }
+            
+        }
+        if found == false {
+            print("NO RESULT")
         }
     }
     
+    
+    func Edit (phonenumber: Int, email: String){
+        var found: Bool = false
+        for i in 0..<Reservation.count  {
+          if( Reservation[i].PhoneNumber == phonenumber){
+                found = true
+              Reservation[i].Email = email
+              print("\n UPDATE SUCCESFULY \n \(Reservation[i].Name ),\(Reservation[i].From) - \(Reservation[i].To) \n")
+                break
+            }
+            else if Reservation[i].Email == email{
+                found = true
+                Reservation[i].PhoneNumber = phonenumber
+                print("UPDATE SUCCESFULY \n \(Reservation[i].Name ),\(Reservation[i].From) - \(Reservation[i].To) \n")
+                break
+            }
+        }
+      if found == false{
+           print("NO RESULLT")
+      }}
+           
+
+    func List (){
+        for i in 0..<Reservation.count {
+            print(Reservation[i].Name)
+        }
+    }
 }
+var MyReservation = Plane()
 
+MyReservation.AddFlight(addflight: Flight( date: "2/02/2022", time: "3:50"))
+MyReservation.AddFlight(addflight: Flight( date: "3/03/2022", time: "5:30"))
+MyReservation.NewAReservation(NewReserve: NewReservation(From: "jed", To: "med", Seat: 2, Name: "razan ahmad", PhoneNumber: 0508318221, Email: "razanth@gmail.com", Date: "2/02/2022", Time: "3:50"))
+MyReservation.NewAReservation(NewReserve: NewReservation(From: "jed", To: "med", Seat: 2, Name: "ahmad khaled", PhoneNumber: 0508318999, Email: "ahmadkh@gmail.com", Date: "3/03/2022", Time: "5:30"))
+MyReservation.NewAReservation(NewReserve: NewReservation(From: "jed", To: "med", Seat: 2, Name: "tala ahmad", PhoneNumber: 058831822, Email: "talath@gmail.com", Date: "2/02/2022", Time: "3:50"))
 
+MyReservation.ShowAllResevationInFlight(date: "3/03/2022")
 
-
-
-var MyReservation = AirLine()
-
-MyReservation.NewAdd(flightName: "A" , From: "med", To: "jed", Seat: 2, Name: "razan", PhoneNumber: 050833227, Email: "razan@gmail.com")
-MyReservation.NewAdd(flightName:"B", From: "med", To: "ryd", Seat: 3,  Name: "ahmad", PhoneNumber: 064321234, Email: "ahmadk@gmail.com")
-MyReservation.NewAdd(flightName: "C",From: "med", To: "makkah", Seat: 4, Name: "sara", PhoneNumber: 0643212322, Email: "sara@gmail.com")
-MyReservation.Search(phoneNumber: 050833227)
-
-MyReservation.GetTicket(pay: true, phonenumber: 0643212322)
-MyReservation.Edit(phonenumber: 050833227, email:"razan@gmail.com")
-MyReservation.Cancel(phonenumber:050833227)
+MyReservation.SearchForReservation(phoneNumber: 0508318221)
+MyReservation.Edit(phonenumber: 0508318221, email: "razan@hotmail.com")
+MyReservation.Cancel(phonenumber: 058831822)
+MyReservation.GetTicket(pay: true, phonenumber: 0508318999)
 MyReservation.List()
 
-
-
-
-
-
-
-
-
-
-
+               
+          
